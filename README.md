@@ -42,18 +42,6 @@ A comprehensive end-to-end machine learning system that predicts customer churn 
 - **Retention Strategies**: Personalized recommendations based on customer segments
 - **Revenue Impact**: Calculate potential revenue loss from churned customers
 
-## 🏗️ Architecture
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Data Sources  │    │   ML Pipeline   │    │   Applications  │
-├─────────────────┤    ├─────────────────┤    ├─────────────────┤
-│ • Customer Data │───▶│ • Data Prep     │───▶│ • Streamlit UI  │
-│ • Feedback Text │    │ • Feature Eng   │    │ • FastAPI       │
-│ • Usage Metrics │    │ • Model Training│    │ • REST Endpoints│
-│ • Transactions │    │ • NLP Analysis  │    │ • Batch Scoring │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
 
 ## 🚀 Quick Start
 
@@ -74,21 +62,7 @@ python deploy_to_github.py
 # 4. Deploy to GitHub
 ```
 
-### Option 2: Docker
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/churn_detection.git
-cd churn_detection
-
-# Start the complete system
-docker-compose up -d
-
-# Access applications
-# Dashboard: http://localhost:8501
-# API: http://localhost:8000
-# API Docs: http://localhost:8000/docs
-```
 
 ### Option 2: Local Installation
 
@@ -108,10 +82,6 @@ python hybrid_model.py
 # Start applications
 # Dashboard
 streamlit run streamlit_dashboard.py
-
-# API (in separate terminal)
-uvicorn fastapi_app:app --reload
-```
 
 ## 📁 Project Structure
 
@@ -140,15 +110,10 @@ churn_prediction/
 │   └── customer_clustering.py  # Customer segmentation
 │
 ├── 🌐 Applications
-│   ├── streamlit_dashboard.py  # Interactive web dashboard
-│   └── fastapi_app.py         # REST API server
-│
-└── 🐳 Deployment
-    ├── Dockerfile              # Container configuration
-    ├── docker-compose.yml      # Multi-service setup
-    ├── requirements.txt        # Python dependencies
-    └── README.md              # This file
-```
+   ├── streamlit_dashboard.py  # Interactive web dashboard
+  └── fastapi_app.py         # REST API server
+
+
 
 ## 📈 Dataset
 
@@ -302,130 +267,6 @@ SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 MAX_TEXT_LENGTH = 512
 ```
 
-## 🚀 Deployment Options
-
-### Local Development
-```bash
-# Start dashboard
-streamlit run streamlit_dashboard.py
-
-# Start API
-uvicorn fastapi_app:app --reload
-```
-
-### Docker Deployment
-```bash
-# Build and run
-docker-compose up -d
-
-# Scale services
-docker-compose up -d --scale churn-api=3
-
-# View logs
-docker-compose logs -f
-```
-
-### Cloud Deployment
-
-#### AWS ECS
-```bash
-# Build for ARM64 (if using ARM-based instances)
-docker build --platform linux/arm64 -t churn-prediction .
-
-# Push to ECR and deploy to ECS
-aws ecr get-login-password | docker login --username AWS --password-stdin <account>.dkr.ecr.<region>.amazonaws.com
-docker tag churn-prediction <account>.dkr.ecr.<region>.amazonaws.com/churn-prediction:latest
-docker push <account>.dkr.ecr.<region>.amazonaws.com/churn-prediction:latest
-```
-
-#### Google Cloud Run
-```bash
-# Build and deploy
-gcloud builds submit --tag gcr.io/PROJECT-ID/churn-prediction
-gcloud run deploy --image gcr.io/PROJECT-ID/churn-prediction --platform managed
-```
-
-#### Azure Container Instances
-```bash
-# Create resource group and deploy
-az group create --name churn-prediction --location eastus
-az container create --resource-group churn-prediction --name churn-api --image churn-prediction:latest
-```
-
-## 🚀 Deployment
-
-### GitHub Setup
-
-1. **Create Repository**: Go to [GitHub](https://github.com/new) and create a new repository named `churn_detection`
-2. **Run Deployment Script**: Execute the automated deployment script:
-   ```bash
-   python deploy_to_github.py
-   ```
-3. **Follow Prompts**: The script will guide you through the GitHub setup process
-
-### Manual GitHub Setup
-
-```bash
-# Initialize git repository
-git init
-
-# Add all files
-git add .
-
-# Commit changes
-git commit -m "Initial commit: Customer Churn Prediction System"
-
-# Add remote origin (replace 'yourusername' with your GitHub username)
-git remote add origin https://github.com/yourusername/churn_detection.git
-
-# Push to GitHub
-git push -u origin master
-```
-
-### Cloud Deployment Options
-
-#### Heroku
-```bash
-# Install Heroku CLI and login
-heroku login
-heroku create churn-prediction-app
-
-# Deploy
-git push heroku master
-```
-
-#### Railway
-```bash
-# Connect your GitHub repository to Railway
-# Railway will automatically deploy on every push
-```
-
-#### Render
-```bash
-# Connect your GitHub repository to Render
-# Set build command: pip install -r requirements.txt
-# Set start command: uvicorn fastapi_app:app --host 0.0.0.0 --port $PORT
-```
-
-## 🧪 Testing
-
-```bash
-# Run model training
-python ml_models.py
-
-# Test API endpoints
-python -m pytest tests/
-
-# Generate sample predictions
-python -c "
-from fastapi_app import app
-from fastapi.testclient import TestClient
-client = TestClient(app)
-response = client.get('/health')
-print(response.json())
-"
-```
-
 ## 📊 Monitoring & Logging
 
 - **Application Logs**: Structured logging with timestamps and levels
@@ -440,17 +281,7 @@ print(response.json())
 - **Rate Limiting**: Built-in FastAPI rate limiting capabilities
 - **Data Privacy**: No sensitive data logging or storage
 
-## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🙏 Acknowledgments
 
