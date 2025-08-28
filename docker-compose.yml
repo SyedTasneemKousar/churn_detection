@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend Service
+  churn-api:
+    build: .
+    container_name: churn-prediction-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./plots:/app/plots
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: ["api"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Streamlit Dashboard Service
+  churn-dashboard:
+    build: .
+    container_name: churn-prediction-dashboard
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./plots:/app/plots
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: ["dashboard"]
+    restart: unless-stopped
+    depends_on:
+      - churn-api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Model Training Service (run once)
+  churn-trainer:
+    build: .
+    container_name: churn-prediction-trainer
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./plots:/app/plots
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: ["train"]
+    profiles:
+      - training
+
+  # Analysis Service (run once)
+  churn-analyzer:
+    build: .
+    container_name: churn-prediction-analyzer
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./plots:/app/plots
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: ["analyze"]
+    profiles:
+      - analysis
+
+volumes:
+  churn_data:
+  churn_models:
+  churn_logs:
+  churn_plots:
+
+networks:
+  default:
+    name: churn-prediction-network
