@@ -1,6 +1,17 @@
 # 🎯 Customer Churn Prediction System
 
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-green.svg)](https://fastapi.tiangolo.com)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.0+-red.svg)](https://streamlit.io)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A comprehensive end-to-end machine learning system that predicts customer churn using traditional ML, deep learning, and NLP techniques. This project combines structured customer data with sentiment analysis from customer feedback to provide accurate churn predictions and actionable business insights.
+
+## 🚀 Live Demo
+
+- **FastAPI API**: [http://localhost:8000](http://localhost:8000)
+- **API Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Streamlit Dashboard**: [http://localhost:8501](http://localhost:8501)
 
 ## 🌟 Features
 
@@ -46,12 +57,29 @@ A comprehensive end-to-end machine learning system that predicts customer churn 
 
 ## 🚀 Quick Start
 
-### Option 1: Docker (Recommended)
+### Option 1: Automated Setup (Recommended)
 
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd churn_prediction
+git clone https://github.com/yourusername/churn_detection.git
+cd churn_detection
+
+# Run the automated deployment script
+python deploy_to_github.py
+
+# The script will:
+# 1. Check if the application is running
+# 2. Start it if needed
+# 3. Help you set up GitHub repository
+# 4. Deploy to GitHub
+```
+
+### Option 2: Docker
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/churn_detection.git
+cd churn_detection
 
 # Start the complete system
 docker-compose up -d
@@ -322,6 +350,61 @@ gcloud run deploy --image gcr.io/PROJECT-ID/churn-prediction --platform managed
 # Create resource group and deploy
 az group create --name churn-prediction --location eastus
 az container create --resource-group churn-prediction --name churn-api --image churn-prediction:latest
+```
+
+## 🚀 Deployment
+
+### GitHub Setup
+
+1. **Create Repository**: Go to [GitHub](https://github.com/new) and create a new repository named `churn_detection`
+2. **Run Deployment Script**: Execute the automated deployment script:
+   ```bash
+   python deploy_to_github.py
+   ```
+3. **Follow Prompts**: The script will guide you through the GitHub setup process
+
+### Manual GitHub Setup
+
+```bash
+# Initialize git repository
+git init
+
+# Add all files
+git add .
+
+# Commit changes
+git commit -m "Initial commit: Customer Churn Prediction System"
+
+# Add remote origin (replace 'yourusername' with your GitHub username)
+git remote add origin https://github.com/yourusername/churn_detection.git
+
+# Push to GitHub
+git push -u origin master
+```
+
+### Cloud Deployment Options
+
+#### Heroku
+```bash
+# Install Heroku CLI and login
+heroku login
+heroku create churn-prediction-app
+
+# Deploy
+git push heroku master
+```
+
+#### Railway
+```bash
+# Connect your GitHub repository to Railway
+# Railway will automatically deploy on every push
+```
+
+#### Render
+```bash
+# Connect your GitHub repository to Render
+# Set build command: pip install -r requirements.txt
+# Set start command: uvicorn fastapi_app:app --host 0.0.0.0 --port $PORT
 ```
 
 ## 🧪 Testing
