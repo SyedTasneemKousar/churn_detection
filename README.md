@@ -13,6 +13,18 @@ A comprehensive end-to-end machine learning system that predicts customer churn 
 - **API Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
 - **Streamlit Dashboard**: [http://localhost:8501](http://localhost:8501)
 
+## ☁️ Deploy to Streamlit Community Cloud
+
+1. Push this repository to GitHub (public or private) and grant Streamlit access.
+2. Go to Streamlit Community Cloud → New app.
+3. Select your repo and branch.
+4. Set App file to `streamlit_dashboard.py`.
+5. Deploy. The build uses `requirements.txt` and `runtime.txt` (Python 3.11). Optional settings live in `.streamlit/config.toml`.
+
+Notes:
+- Large models/data should be downloaded at runtime from a remote URL or stored with Git LFS.
+- Use `st.secrets` for private keys/URLs (Settings → Secrets in Streamlit Cloud).
+
 ## 🌟 Features
 
 ### 🤖 Machine Learning Models

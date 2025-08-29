@@ -27,26 +27,82 @@ st.set_page_config(
 
 # Custom CSS
 st.markdown("""
-<style>
+          
+          <style>
+    /* General metric card styling */
+    .metric-card {
+        background-color: #1e1e1e; /* Darker card for contrast */
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 0.25rem solid #1f77b4;
+        color: #f5f5f5 !important; /* Light text */
+    }
+
+    .metric-card h4 {
+        color: #1f77b4 !important;
+        margin-bottom: 0.5rem;
+    }
+
+    .metric-card p {
+        color: #f5f5f5 !important; /* Ensure paragraph text is visible */
+        margin: 0.25rem 0;
+    }
+
+    /* Prediction colors */
+    .prediction-high {
+        color: #ff4c4c !important; /* Bright red */
+        font-weight: bold;
+    }
+
+    .prediction-low {
+        color: #4cd964 !important; /* Bright green */
+        font-weight: bold;
+    }
+
+    .prediction-medium {
+        color: #ff9500 !important; /* Bright orange */
+        font-weight: bold;
+    }
+
+    /* Override Streamlit default text colors */
+    .stMarkdown p {
+        color: #f5f5f5 !important;
+    }
+
+    .stMarkdown h4 {
+        color: #1f77b4 !important;
+    }
+
+    /* Ensure all text in metric cards is visible */
+    .element-container .metric-card * {
+        color: #f5f5f5 !important;
+    }
+
+    .element-container .metric-card .prediction-high {
+        color: #ff4c4c !important;
+    }
+
+    .element-container .metric-card .prediction-low {
+        color: #4cd964 !important;
+    }
+
+    .element-container .metric-card .prediction-medium {
+        color: #ff9500 !important;
+    }
+
+    /* Readability fixes scoped to Risk Factors and Retention sections */
+    .risk-factors * { color: #e5e7eb !important; }
+    .retention-recs * { color: #e5e7eb !important; }
+    .risk-factors h4, .retention-recs h4 { color: #ffffff !important; }
+    /* Ensure Streamlit alert text inside banner remains visible */
+    .stAlert div, .stAlert p, .stAlert span, .stAlert li { color: #e5e7eb !important; }
+
+    /* Header */
     .main-header {
         font-size: 2.5rem;
         color: #1f77b4;
         text-align: center;
         margin-bottom: 2rem;
-    }
-    .metric-card {
-        background-color: #f0f2f6;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 0.25rem solid #1f77b4;
-    }
-    .prediction-high {
-        color: #d62728;
-        font-weight: bold;
-    }
-    .prediction-low {
-        color: #2ca02c;
-        font-weight: bold;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -408,8 +464,12 @@ class ChurnDashboard:
                 
                 if risk_factors:
                     st.warning("⚠️ **Risk Factors Identified:**")
-                    for factor in risk_factors:
-                        st.write(f"• {factor}")
+                    st.markdown('<div class="risk-factors">', unsafe_allow_html=True)
+                    st.markdown(
+                        "<ul>" + "".join([f'<li>{factor}</li>' for factor in risk_factors]) + "</ul>",
+                        unsafe_allow_html=True,
+                    )
+                    st.markdown('</div>', unsafe_allow_html=True)
                 else:
                     st.success("✅ **No major risk factors identified**")
                 
@@ -429,8 +489,10 @@ class ChurnDashboard:
                     recommendations.append("Implement new customer onboarding program")
                 
                 if recommendations:
+                    st.markdown('<div class="retention-recs">', unsafe_allow_html=True)
                     for rec in recommendations:
-                        st.write(f"💡 {rec}")
+                        st.markdown(f'<p>💡 {rec}</p>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
                 else:
                     st.info("Customer appears to be in good standing. Continue regular engagement.")
                 
@@ -626,6 +688,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
