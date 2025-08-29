@@ -8,6 +8,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import joblib
+import os
+import requests
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -106,6 +108,24 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+# Ensure required dataset exists in Streamlit Cloud by auto-downloading if missing
+def _download_if_missing():
+    try:
+        if not RAW_DATA_PATH.exists():
+            url = st.secrets.get("RAW_DATA_URL", os.getenv("RAW_DATA_URL", ""))
+            if not url:
+                return  # No URL configured; leave default behavior
+            DATA_DIR.mkdir(exist_ok=True)
+            st.info("Downloading dataset...")
+            resp = requests.get(url, timeout=60)
+            resp.raise_for_status()
+            RAW_DATA_PATH.write_bytes(resp.content)
+            st.success(f"Dataset downloaded to {RAW_DATA_PATH}")
+    except Exception as e:
+        st.warning(f"Dataset download skipped: {e}")
+
+_download_if_missing()
 
 class ChurnDashboard:
     """Streamlit dashboard for churn prediction"""
