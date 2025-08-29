@@ -112,16 +112,27 @@ st.markdown("""
 # Ensure required dataset exists in Streamlit Cloud by auto-downloading if missing
 def _download_if_missing():
     try:
+        DATA_DIR.mkdir(exist_ok=True)
+
+        # 1) Raw churn dataset
         if not RAW_DATA_PATH.exists():
-            url = st.secrets.get("RAW_DATA_URL", os.getenv("RAW_DATA_URL", ""))
-            if not url:
-                return  # No URL configured; leave default behavior
-            DATA_DIR.mkdir(exist_ok=True)
-            st.info("Downloading dataset...")
-            resp = requests.get(url, timeout=60)
-            resp.raise_for_status()
-            RAW_DATA_PATH.write_bytes(resp.content)
-            st.success(f"Dataset downloaded to {RAW_DATA_PATH}")
+            raw_url = st.secrets.get("RAW_DATA_URL", os.getenv("RAW_DATA_URL", ""))
+            if raw_url:
+                st.info("Downloading churn dataset...")
+                resp = requests.get(raw_url, timeout=60)
+                resp.raise_for_status()
+                RAW_DATA_PATH.write_bytes(resp.content)
+                st.success(f"Dataset downloaded to {RAW_DATA_PATH}")
+
+        # 2) Customer feedback (optional)
+        if not CUSTOMER_FEEDBACK_PATH.exists():
+            fb_url = st.secrets.get("FEEDBACK_DATA_URL", os.getenv("FEEDBACK_DATA_URL", ""))
+            if fb_url:
+                st.info("Downloading customer feedback...")
+                resp = requests.get(fb_url, timeout=60)
+                resp.raise_for_status()
+                CUSTOMER_FEEDBACK_PATH.write_bytes(resp.content)
+                st.success(f"Feedback downloaded to {CUSTOMER_FEEDBACK_PATH}")
     except Exception as e:
         st.warning(f"Dataset download skipped: {e}")
 
