@@ -7,11 +7,7 @@
 
 A comprehensive end-to-end machine learning system that predicts customer churn using traditional ML, deep learning, and NLP techniques. This project combines structured customer data with sentiment analysis from customer feedback to provide accurate churn predictions and actionable business insights.
 
-## 🚀 Live Demo
 
-- **FastAPI API**: [http://localhost:8000](http://localhost:8000)
-- **API Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **Streamlit Dashboard**: [http://localhost:8501](http://localhost:8501)
 
 ## ☁️ Deploy to Streamlit Community Cloud
 
